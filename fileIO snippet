@@ -1,0 +1,12 @@
+"": {
+  "prefix": "fileIO",
+  "body": [
+    "#ifndef ONLINE_JUDGE",
+    "        freopen(\"Error.txt\", \"w\", stderr);",
+    "        freopen(\"input.txt\", \"r\", stdin);",
+    "        freopen(\"output.txt\", \"w\", stdout);",
+    "#endif",
+    ""
+  ],
+  "description": ""
+}
