@@ -1,6 +1,14 @@
+/*
+________                               _____.___.           .___            
+\______ \   ____   ____ ______  __ __  \__  |   |____     __| _/____ ___  __
+ |    |  \_/ __ \_/ __ \\____ \|  |  \  /   |   \__  \   / __ |\__  \\  \/ /
+ |    `   \  ___/\  ___/|  |_> >  |  /  \____   |/ __ \_/ /_/ | / __ \\   / 
+/_______  /\___  >\___  >   __/|____/   / ______(____  /\____ |(____  /\_/  
+        \/     \/     \/|__|            \/           \/      \/     \/      
+*/
+
+
 #include<bits/stdc++.h>
-#include<istream>
-#include<fstream>
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
  
@@ -18,24 +26,22 @@ template<class key, class value, class cmp = std::less<key>> using ordered_map =
 // x.find_by_order(1) -> return pointer to element present at index 1
 // x.order_of_key(2) -> return index of element 2
 
+// https://aryanc403.com/blog/y_combinator/
+// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
+template<class Fun> class y_combinator_result {
+    Fun fun_;
+public:
+    template<class T> explicit y_combinator_result(T &&fun): fun_(std::forward<T>(fun)) {}
+    template<class ...Args> decltype(auto) operator()(Args &&...args) { return fun_(std::ref(*this), std::forward<Args>(args)...); }
+};
+template<class Fun> decltype(auto) y_combinator(Fun &&fun) { return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun)); }
+
+
 #ifndef ONLINE_JUDGE
-#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
+#include "D:\coding\cpp files\customHeaderFiles\debug.h"
 #else
 #define debug(x)
 #endif
-
-template<class T> void _print(T &x) {cerr << x;}
-
-template <class T, class V> void _print(pair <T, V> p);
-template <class T> void _print(vector <T> v);
-template <class T> void _print(set <T> v);
-template <class T, class V> void _print(map <T, V> v);
-template <class T> void _print(multiset <T> v);
-template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.ff); cerr << ","; _print(p.ss); cerr << "}";}
-template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 //To make unordered_map unhackable 
 // use it as unordered_map<int,int,custom_hash> mapp;
@@ -54,6 +60,10 @@ struct custom_hash {
     }
 };
 
+
+// clock
+mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
+
 // Predefined values
 const ll mod = 1e9+7;
 
@@ -62,19 +72,26 @@ void solve(){
 }
 
 int main(){
+
+    auto begin = std::chrono::high_resolution_clock::now();
     
     ios_base :: sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
 
-    #ifndef ONLINE_JUDGE
-    // freopen("Error.txt", "w", stderr);
-    #endif
+    // #ifndef ONLINE_JUDGE
+    //   freopen("Error.txt", "w", stderr);
+    // #endif
 
-    int t=1;
-    cin>>t;
-    while(t--){
+    int testcase=1;
+    cin>>testcase;
+    while(testcase--){
         solve();
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds.\n"; 
+
     return 0;
 }
