@@ -1,45 +1,50 @@
-
-class SegTree {
+template<typename t1, typename t2>
+class SegmentTree {
     public:
-    vector<ll>seg;
+    vector<t1>seg;
 
-    SegTree(int n){
-        seg.resize(4*n+5);
+    SegmentTree(int n){
+        seg.resize(4*n+10);
     }
 
-    void build(int node, int st, int en, vector<int>&v){
-        if(st == en){
-            seg[node]=v[st];
+    void build(int node, int l, int r, vector<t2>&v){
+        if(l == r){
+            seg[node] = v[l];
             return;
         }
 
-        int mid = (st+en)/2;
-        build(2*node, st, mid, v);
-        build(2*node+1, mid+1, en, v);
+        int mid = (l+r)/2;
+        build(2*node, l, mid, v);
+        build(2*node+1, mid+1, r, v);
         seg[node] = max(seg[2*node], seg[2*node+1]);
     }
 
-    ll query(int node, int st, int en, int l, int r){
-        if(st > r || l>en) return -1;
-        if(l<=st && en<=r) return seg[node];
+    t1 query(int node, int qStart, int qEnd, int l, int r){
+        if(qStart<=l && r<=qEnd){
+            return seg[node];
+        }
 
-        int mid = (st+en)/2;
-        return max(query(2*node, st, mid, l, r), query(2*node+1, mid+1, en, l, r));
+        if(r < qStart || qEnd < l){
+            return -1;
+        }
+
+        int mid = (l+r)/2;
+        return max(query(2*node, qStart, qEnd, l, mid), query(2*node+1, qStart, qEnd, mid+1, r));
     }
 
-    void update(int node, int st, int en, int i, int val, vector<int>&v){
-        if(st == en){
-            v[i]=val;
-            seg[node] = val;
+    void update(int node, int idx, int l, int r, t2 val, vector<t2>&v){
+        if(l == r){
+            v[idx]=val;
+            seg[node]=val;
             return;
         }
 
-        int mid = (st+en)/2;
-        if(i<=mid){
-            update(2*node, st, mid, i, val, v);
+        int mid=(l+r)/2;
+        if(idx <= mid){
+            update(2*node, idx, l, mid, val, v);
         }else{
-            update(2*node+1, mid+1, en, i, val, v);
+            update(2*node+1, idx, mid+1, r, val, v);
         }
-        seg[node] = max(seg[2*node], seg[2*node+1]);
+        max(seg[2*node], seg[2*node+1]);
     }
 };
