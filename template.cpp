@@ -40,7 +40,8 @@ template<class Fun> decltype(auto) y_combinator(Fun &&fun) { return y_combinator
 #ifndef ONLINE_JUDGE
 #include "D:\coding\cpp files\customHeaderFiles\debug.h"
 #else
-#define debug(x)
+#define debug(...)
+#define debugArr(...)
 #endif
 
 //To make unordered_map unhackable 
